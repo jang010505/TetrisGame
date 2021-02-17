@@ -18,6 +18,7 @@ int nxtblock;        // 블럭 모양 0~6
 int blockVector = 0; // 블럭 방향
 int key;
 int level = 0;
+int score = 0;
 
 void init();
 void move(int x, int y);
@@ -79,7 +80,6 @@ int main()
         blockToground();
         removeLine();
         inputKey();
-        level++;
     }
     return 0;
 }
@@ -122,7 +122,7 @@ int check(int x, int y)
 void dropBlock()
 {
     endT = clock();
-    if ((float)(endT - startDropT) >= 800 - level / 1000)
+    if ((float)(endT - startDropT) >= 800 - 400 * (1 - pow(0.995, level)))
     {
         if (check(x, y + 1))
             return;
@@ -156,6 +156,7 @@ void blockToground()
 }
 void removeLine()
 {
+    int count = 0;
     for (int i = 15; i >= 0; i--)
     {
         int cnt = 0;
@@ -164,6 +165,7 @@ void removeLine()
                 cnt++;
         if (cnt >= 10)
         {
+            count++;
             for (int j = 0; i - j >= 0; j++)
             {
                 for (int x = 1; x < 11; x++)
@@ -176,6 +178,8 @@ void removeLine()
             }
         }
     }
+    level += count;
+    score += 100 * count * count;
 }
 void drawMap()
 {
@@ -235,6 +239,10 @@ void drawNxtblock()
             }
         }
     }
+    move(24, 6);
+    printf("LEVEL : %d", level / 10 + 1);
+    move(24, 7);
+    printf("SCORE : %d", score);
 }
 void inputKey()
 {
