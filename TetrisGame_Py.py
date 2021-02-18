@@ -8,12 +8,13 @@ import time
 from pygame.locals import *
 
 # now point
-now_x = 120
+now_x = 200
 now_y = 140
 
-# block tmp
+# block info
 nowblock = 0
 nxtblock = 0
+blockvector = 0
 
 # table
 width = 12
@@ -81,6 +82,26 @@ block[6].append([[0, 0, 0, 0], [0, 1, 1, 1], [0, 0, 1, 0], [0, 0, 0, 0]])
 block[6].append([[0, 0, 0, 0], [0, 0, 1, 0], [0, 1, 1, 0], [0, 0, 1, 0]])
 
 
+def findcolor(tmp):
+    if tmp == 1:
+        tmp_color = "WHITE"
+    elif tmp == 2:
+        tmp_color = "PINK"
+    elif tmp == 3:
+        tmp_color = "PURPLE"
+    elif tmp == 4:
+        tmp_color = "SKYBLUE"
+    elif tmp == 5:
+        tmp_color = "LIGHTGREEN"
+    elif tmp == 6:
+        tmp_color = "YELLOW"
+    elif tmp == 7:
+        tmp_color = "ORANGE"
+    elif tmp == 8:
+        tmp_color = "RED"
+    return tmp_color
+
+
 def drawmain(self, index, check):
     self.fill(color["SKYBLUE"])
     fontmain = pygame.font.Font(None, 50)
@@ -126,32 +147,24 @@ def drawtable(self):
     for i in range(height):
         for j in range(width):
             if table[i][j]:
-                if table[i][j] == 1:
-                    tmp_color = "WHITE"
-                elif table[i][j] == 2:
-                    tmp_color = "PINK"
-                elif table[i][j] == 3:
-                    tmp_color = "PURPLE"
-                elif table[i][j] == 4:
-                    tmp_color = "SKYBLUE"
-                elif table[i][j] == 5:
-                    tmp_color = "LIGHTGREEN"
-                elif table[i][j] == 6:
-                    tmp_color = "YELLOW"
-                elif table[i][j] == 7:
-                    tmp_color = "RED"
+                tmp_color = findcolor(table[i][j])
                 pygame.draw.rect(self, color[tmp_color], [
                                  100+j*20, 120+i*20, 20, 20])
     pygame.display.flip()
 
 
-def drawblock():
+def drawblock(self):
     global now_x
     global now_y
     global nowblock
+    global blockvector
     for i in range(4):
         for j in range(4):
-            x = 1
+            if block[nowblock][blockvector][i][j] == 1:
+                tmp_color = findcolor(nowblock+2)
+                pygame.draw.rect(self, color[tmp_color], [
+                                 now_x+j*20, now_y+i*20, 20, 20])
+    pygame.display.update()
 
 
 def randomblock():
@@ -174,7 +187,7 @@ def startgame(self):
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     gamestop()
-        drawblock()
+        drawblock(self)
 
 
 def initgame():
