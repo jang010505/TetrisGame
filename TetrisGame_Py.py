@@ -7,6 +7,14 @@ import time
 
 from pygame.locals import *
 
+# now point
+now_x = 120
+now_y = 140
+
+# block tmp
+nowblock = 0
+nxtblock = 0
+
 # table
 width = 12
 height = 21
@@ -24,13 +32,53 @@ color = {
     "ORANGE": (255, 193, 158),
     "RED": (255, 167, 167)}
 
-# table, block
+# table
 table = [[0]*width for i in range(height)]
 for i in range(height):
     table[i][0] = 1
     table[i][11] = 1
 for i in range(width):
     table[20][i] = 1
+
+# block
+block = list()
+for i in range(7):
+    block.append([])
+# block 1
+block[0].append([[0, 0, 0, 0], [1, 1, 1, 1], [0, 0, 0, 0], [0, 0, 0, 0]])
+block[0].append([[0, 0, 1, 0], [0, 0, 1, 0], [0, 0, 1, 0], [0, 0, 1, 0]])
+block[0].append([[0, 0, 0, 0], [0, 0, 0, 0], [1, 1, 1, 1], [0, 0, 0, 0]])
+block[0].append([[0, 1, 0, 0], [0, 1, 0, 0], [0, 1, 0, 0], [0, 1, 0, 0]])
+# block 2
+block[1].append([[0, 0, 0, 0], [0, 1, 1, 0], [0, 1, 1, 0], [0, 0, 0, 0]])
+block[1].append([[0, 0, 0, 0], [0, 1, 1, 0], [0, 1, 1, 0], [0, 0, 0, 0]])
+block[1].append([[0, 0, 0, 0], [0, 1, 1, 0], [0, 1, 1, 0], [0, 0, 0, 0]])
+block[1].append([[0, 0, 0, 0], [0, 1, 1, 0], [0, 1, 1, 0], [0, 0, 0, 0]])
+# block 3
+block[2].append([[0, 0, 0, 0], [0, 0, 1, 0], [1, 1, 1, 0], [0, 0, 0, 0]])
+block[2].append([[0, 1, 0, 0], [0, 1, 0, 0], [0, 1, 1, 0], [0, 0, 0, 0]])
+block[2].append([[0, 0, 0, 0], [0, 1, 1, 1], [0, 1, 0, 0], [0, 0, 0, 0]])
+block[2].append([[0, 0, 0, 0], [0, 1, 1, 0], [0, 0, 1, 0], [0, 0, 1, 0]])
+# block 4
+block[3].append([[0, 0, 0, 0], [0, 1, 0, 0], [0, 1, 1, 1], [0, 0, 0, 0]])
+block[3].append([[0, 0, 0, 0], [0, 1, 1, 0], [0, 1, 0, 0], [0, 1, 0, 0]])
+block[3].append([[0, 0, 0, 0], [1, 1, 1, 0], [0, 0, 1, 0], [0, 0, 0, 0]])
+block[3].append([[0, 0, 1, 0], [0, 0, 1, 0], [0, 1, 1, 0], [0, 0, 0, 0]])
+# block 5
+block[4].append([[0, 0, 0, 0], [0, 0, 1, 1], [0, 1, 1, 0], [0, 0, 0, 0]])
+block[4].append([[0, 0, 0, 0], [0, 1, 0, 0], [0, 1, 1, 0], [0, 0, 1, 0]])
+block[4].append([[0, 0, 0, 0], [0, 1, 1, 0], [1, 1, 0, 0], [0, 0, 0, 0]])
+block[4].append([[0, 1, 0, 0], [0, 1, 1, 0], [0, 0, 1, 0], [0, 0, 0, 0]])
+# block 6
+block[5].append([[0, 0, 0, 0], [1, 1, 0, 0], [0, 1, 1, 0], [0, 0, 0, 0]])
+block[5].append([[0, 0, 1, 0], [0, 1, 1, 0], [0, 1, 0, 0], [0, 0, 0, 0]])
+block[5].append([[0, 0, 0, 0], [0, 1, 1, 0], [0, 0, 1, 1], [0, 0, 0, 0]])
+block[5].append([[0, 0, 0, 0], [0, 0, 1, 0], [0, 1, 1, 0], [0, 1, 0, 0]])
+# block 7
+block[6].append([[0, 0, 0, 0], [0, 1, 0, 0], [1, 1, 1, 0], [0, 0, 0, 0]])
+block[6].append([[0, 1, 0, 0], [0, 1, 1, 0], [0, 1, 0, 0], [0, 0, 0, 0]])
+block[6].append([[0, 0, 0, 0], [0, 1, 1, 1], [0, 0, 1, 0], [0, 0, 0, 0]])
+block[6].append([[0, 0, 0, 0], [0, 0, 1, 0], [0, 1, 1, 0], [0, 0, 1, 0]])
 
 
 def drawmain(self, index, check):
@@ -97,9 +145,28 @@ def drawtable(self):
     pygame.display.flip()
 
 
+def drawblock():
+    global now_x
+    global now_y
+    global nowblock
+    for i in range(4):
+        for j in range(4):
+            x = 1
+
+
+def randomblock():
+    global nowblock
+    global nxtblock
+    nowblock = nxtblock
+    nxtblock = random.randrange(7)
+
+
 def startgame(self):
-    drawtable(self)
     run = True
+    global nxtblock
+    nxtblock = random.randrange(7)
+    randomblock()
+    drawtable(self)
     while run:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -107,6 +174,7 @@ def startgame(self):
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     gamestop()
+        drawblock()
 
 
 def initgame():
