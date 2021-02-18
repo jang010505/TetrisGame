@@ -24,7 +24,7 @@ color = {
     "ORANGE": (255, 193, 158),
     "RED": (255, 167, 167)}
 
-#table, block
+# table, block
 table = [[0]*width for i in range(height)]
 for i in range(height):
     table[i][0] = 1
@@ -62,12 +62,51 @@ def drawmain(self, index, check):
     pygame.display.flip()
 
 
+def gamestop():
+    run = True
+    while run:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                run = False
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    run = False
+
+
 def drawtable(self):
-    x = 1
+    self.fill(color["BLACK"])
+    for i in range(height):
+        for j in range(width):
+            if table[i][j]:
+                if table[i][j] == 1:
+                    tmp_color = "WHITE"
+                elif table[i][j] == 2:
+                    tmp_color = "PINK"
+                elif table[i][j] == 3:
+                    tmp_color = "PURPLE"
+                elif table[i][j] == 4:
+                    tmp_color = "SKYBLUE"
+                elif table[i][j] == 5:
+                    tmp_color = "LIGHTGREEN"
+                elif table[i][j] == 6:
+                    tmp_color = "YELLOW"
+                elif table[i][j] == 7:
+                    tmp_color = "RED"
+                pygame.draw.rect(self, color[tmp_color], [
+                                 100+j*20, 120+i*20, 20, 20])
+    pygame.display.flip()
 
 
 def startgame(self):
     drawtable(self)
+    run = True
+    while run:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                run = False
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    gamestop()
 
 
 def initgame():
