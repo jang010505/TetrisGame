@@ -141,8 +141,8 @@ def check(x, y):
     for i in range(4):
         for j in range(4):
             if block[nowblock][blockvector][i][j]:
-                tmp = table[x][y]
-                if tmp == 1 or tmp == 2:
+                tmp = table[y+i][x+j]
+                if tmp:
                     return 0
     return 1
 
@@ -184,7 +184,7 @@ def blocktoground():
             for i in range(4):
                 for j in range(4):
                     if block[nowblock][blockvector][i][j]:
-                        table[now_x][now_y] = 2
+                        table[now_y+i][now_x+j] = nowblock+2
             now_x = 4
             now_y = 0
             blockvector = 0
@@ -212,7 +212,7 @@ def drawblock(self):
             if block[nowblock][blockvector][i][j] == 1:
                 tmp_color = findcolor(nowblock+2)
                 pygame.draw.rect(self, color[tmp_color], [
-                                 100+now_x*20+j*20, 140+now_y*20+i*20, 20, 20])
+                                 100+now_x*20+j*20, 120+now_y*20+i*20, 20, 20])
     pygame.display.update()
 
 
