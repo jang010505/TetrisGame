@@ -8,8 +8,8 @@ import time
 from pygame.locals import *
 
 # now point
-now_x = 200
-now_y = 140
+now_x = 4
+now_y = 0
 
 # block info
 nowblock = 0
@@ -81,6 +81,10 @@ block[6].append([[0, 1, 0, 0], [0, 1, 1, 0], [0, 1, 0, 0], [0, 0, 0, 0]])
 block[6].append([[0, 0, 0, 0], [0, 1, 1, 1], [0, 0, 1, 0], [0, 0, 0, 0]])
 block[6].append([[0, 0, 0, 0], [0, 0, 1, 0], [0, 1, 1, 0], [0, 0, 1, 0]])
 
+start_time = pygame.time.get_ticks()
+start_ground_time = pygame.time.get_ticks()
+end_time = pygame.time.get_ticks()
+
 
 def findcolor(tmp):
     if tmp == 1:
@@ -131,6 +135,18 @@ def drawmain(self, index, check):
     pygame.display.flip()
 
 
+def check(x, y):
+    global nowblock
+    global blockvector
+    for i in range(4):
+        for j in range(4):
+            if block[nowblock][blockvector][i][j]:
+                tmp = table[x][y]
+                if tmp == 1 or tmp == 2:
+                    return 0
+    return 1
+
+
 def gamestop():
     run = True
     while run:
@@ -140,6 +156,39 @@ def gamestop():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     run = False
+
+
+def dropblock():
+    global start_time
+    global start_ground_time
+    global end_time
+    global now_x
+    global now_y
+    end_time = pygame.time.get_ticks()
+    if end_time-start_time >= 300:
+        if check(now_x, now_y+1):
+            now_y += 1
+            start_time = pygame.time.get_ticks()
+            start_ground_time = pygame.time.get_ticks()
+
+
+def blocktoground():
+    global now_x
+    global now_y
+    global start_ground_time
+    global end_time
+    global nowblock
+    global blockvector
+    if check(now_x, now_y+1) == 0:
+        if end_time-start_ground_time >= 800:
+            for i in range(4):
+                for j in range(4):
+                    if block[nowblock][blockvector][i][j]:
+                        table[now_x][now_y] = 2
+            now_x = 4
+            now_y = 0
+            blockvector = 0
+            randomblock()
 
 
 def drawtable(self):
@@ -163,7 +212,7 @@ def drawblock(self):
             if block[nowblock][blockvector][i][j] == 1:
                 tmp_color = findcolor(nowblock+2)
                 pygame.draw.rect(self, color[tmp_color], [
-                                 now_x+j*20, now_y+i*20, 20, 20])
+                                 100+now_x*20+j*20, 140+now_y*20+i*20, 20, 20])
     pygame.display.update()
 
 
@@ -177,9 +226,10 @@ def randomblock():
 def startgame(self):
     run = True
     global nxtblock
+    global start_time
+    start_time = pygame.time.get_ticks()
     nxtblock = random.randrange(7)
     randomblock()
-    drawtable(self)
     while run:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -187,13 +237,17 @@ def startgame(self):
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     gamestop()
+        drawtable(self)
         drawblock(self)
+        dropblock()
+        blocktoground()
 
 
 def initgame():
     pygame.init()
     screen = pygame.display.set_mode((700, 700))
     pygame.display.set_caption("Tetris")
+    global start_time
     idx = 0
     check = 0
     run = True
