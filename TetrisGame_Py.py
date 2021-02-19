@@ -85,6 +85,9 @@ start_time = pygame.time.get_ticks()
 start_ground_time = pygame.time.get_ticks()
 end_time = pygame.time.get_ticks()
 
+score = 0
+level = 0
+
 
 def findcolor(tmp):
     if tmp == 1:
@@ -227,6 +230,31 @@ def randomblock():
     nxtblock = random.randrange(7)
 
 
+def removeline(self):
+    global height
+    global width
+    global score
+    count = 0
+    for i in range(2, height-1):
+        chk = 1
+        for j in range(1, width-1):
+            if table[i][j] == 0:
+                chk = 0
+                break
+        if chk:
+            count += 1
+            for j in range(i, 1, -1):
+                for k in range(1, width-1):
+                    if j != 2:
+                        table[j][k] = table[j-1][k]
+                    else:
+                        table[j][k] = 0
+    score += 100*count*count
+    if count:
+        drawtable(self)
+        drawblock(self)
+
+
 def startgame(self):
     run = True
     global nxtblock
@@ -273,6 +301,7 @@ def startgame(self):
                         drawblock(self)
         dropblock(self)
         blocktoground(self)
+        removeline(self)
 
 
 def initgame():
