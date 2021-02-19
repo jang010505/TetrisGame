@@ -158,7 +158,7 @@ def gamestop():
                     run = False
 
 
-def dropblock():
+def dropblock(self):
     global start_time
     global start_ground_time
     global end_time
@@ -170,9 +170,11 @@ def dropblock():
             now_y += 1
             start_time = pygame.time.get_ticks()
             start_ground_time = pygame.time.get_ticks()
+            drawtable(self)
+            drawblock(self)
 
 
-def blocktoground():
+def blocktoground(self):
     global now_x
     global now_y
     global start_ground_time
@@ -189,6 +191,8 @@ def blocktoground():
             now_y = 0
             blockvector = 0
             randomblock()
+            drawtable(self)
+            drawblock(self)
 
 
 def drawtable(self):
@@ -237,10 +241,8 @@ def startgame(self):
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     gamestop()
-        drawtable(self)
-        drawblock(self)
-        dropblock()
-        blocktoground()
+        dropblock(self)
+        blocktoground(self)
 
 
 def initgame():
