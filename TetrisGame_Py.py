@@ -18,7 +18,7 @@ blockvector = 0
 
 # table
 width = 12
-height = 21
+height = 23
 sqauresize = 25
 
 # color
@@ -35,11 +35,11 @@ color = {
 
 # table
 table = [[0]*width for i in range(height)]
-for i in range(height):
+for i in range(2, height):
     table[i][0] = 1
     table[i][11] = 1
 for i in range(width):
-    table[20][i] = 1
+    table[22][i] = 1
 
 # block
 block = list()
@@ -231,6 +231,9 @@ def startgame(self):
     run = True
     global nxtblock
     global start_time
+    global blockvector
+    global now_x
+    global now_y
     start_time = pygame.time.get_ticks()
     nxtblock = random.randrange(7)
     randomblock()
@@ -241,6 +244,33 @@ def startgame(self):
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     gamestop()
+                if event.key == pygame.K_UP:
+                    blockvector = (blockvector+1) % 4
+                    if check(now_x, now_y) == 0:
+                        blockvector = (blockvector-1) % 4
+                    drawtable(self)
+                    drawblock(self)
+                if event.key == pygame.K_DOWN:
+                    blockvector = (blockvector-1) % 4
+                    if check(now_x, now_y) == 0:
+                        blockvector = (blockvector+1) % 4
+                    drawtable(self)
+                    drawblock(self)
+                if event.key == pygame.K_LEFT:
+                    if check(now_x-1, now_y):
+                        now_x -= 1
+                        drawtable(self)
+                        drawblock(self)
+                if event.key == pygame.K_RIGHT:
+                    if check(now_x+1, now_y):
+                        now_x += 1
+                        drawtable(self)
+                        drawblock(self)
+                if event.key == pygame.K_SPACE:
+                    if check(now_x, now_y+1):
+                        now_y += 1
+                        drawtable(self)
+                        drawblock(self)
         dropblock(self)
         blocktoground(self)
 
