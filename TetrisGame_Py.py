@@ -278,8 +278,23 @@ def space_bar():
             break
 
 
+def checkgameend():
+    global now_y
+    global now_x
+    global nowblock
+    if now_x == 4 and now_y == 0:
+        for i in range(4):
+            for j in range(4):
+                if block[nowblock][0][i][j]:
+                    if table[now_y+i][now_x+j]:
+                        return 1
+    return 0
+
+
 def startgame(self):
     run = True
+    global width
+    global height
     global nxtblock
     global start_time
     global blockvector
@@ -319,10 +334,14 @@ def startgame(self):
                         drawblock(self)
                 if event.key == pygame.K_SPACE:
                     space_bar()
-                    blocktoground(self)
-                    removeline(self)
         dropblock(self)
         blocktoground(self)
+        if checkgameend():
+            run = False
+            for i in range(2, height-1):
+                for j in range(1, width-1):
+                    table[i][j] = 0
+            break
         removeline(self)
 
 
