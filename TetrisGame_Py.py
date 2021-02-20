@@ -268,6 +268,16 @@ def removeline(self):
         drawblock(self)
 
 
+def space_bar():
+    global now_x
+    global now_y
+    while True:
+        if check(now_x, now_y+1):
+            now_y += 1
+        else:
+            break
+
+
 def startgame(self):
     run = True
     global nxtblock
@@ -308,10 +318,9 @@ def startgame(self):
                         drawtable(self)
                         drawblock(self)
                 if event.key == pygame.K_SPACE:
-                    if check(now_x, now_y+1):
-                        now_y += 1
-                        drawtable(self)
-                        drawblock(self)
+                    space_bar()
+                    blocktoground(self)
+                    removeline(self)
         dropblock(self)
         blocktoground(self)
         removeline(self)
