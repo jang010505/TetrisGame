@@ -201,6 +201,8 @@ def blocktoground(self):
 
 def drawtable(self):
     global nxtblock
+    global score
+    global level
     self.fill(color["BLACK"])
     for i in range(height):
         for j in range(width):
@@ -218,6 +220,13 @@ def drawtable(self):
                 tmp_color = findcolor(nxtblock+2)
                 pygame.draw.rect(self, color[tmp_color], [
                                  340+j*20, 180+i*20, 20, 20])
+    txtfont = pygame.font.Font(None, 20)
+    txtscore = txtfont.render("SCORE : %d" %
+                              (level//10+1), True, color["BLACK"])
+    txtlevel = txtfont.render("LEVEL : ", True, color["BLACK"])
+    self.blit(txtscore, (325, 300))
+    self.blit(txtlevel, (325, 310))
+    self.blit(txtScore, (360, 300))
     pygame.display.flip()
 
 
