@@ -167,8 +167,9 @@ def dropblock(self):
     global end_time
     global now_x
     global now_y
+    global level
     end_time = pygame.time.get_ticks()
-    if end_time-start_time >= 300:
+    if end_time-start_time >= 800-500*(1-0.995**(level//10)):
         if check(now_x, now_y+1):
             now_y += 1
             start_time = pygame.time.get_ticks()
@@ -250,6 +251,7 @@ def removeline(self):
                     else:
                         table[j][k] = 0
     score += 100*count*count
+    level += count*count
     if count:
         drawtable(self)
         drawblock(self)
