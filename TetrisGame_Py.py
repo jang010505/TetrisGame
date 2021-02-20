@@ -208,8 +208,9 @@ def drawtable(self):
                 tmp_color = findcolor(table[i][j])
                 pygame.draw.rect(self, color[tmp_color], [
                                  100+j*20, 120+i*20, 20, 20])
+    pygame.draw.rect(self, color["WHITE"], [100, 140, 340, 20])
     pygame.draw.rect(self, color["WHITE"], [340, 160, 100, 20])
-    pygame.draw.rect(self, color["WHITE"], [340, 260, 100, 20])
+    pygame.draw.rect(self, color["WHITE"], [340, 260, 100, 320])
     pygame.draw.rect(self, color["WHITE"], [420, 180, 20, 80])
     for i in range(4):
         for j in range(4):
