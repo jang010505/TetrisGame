@@ -200,6 +200,7 @@ def blocktoground(self):
 
 
 def drawtable(self):
+    global nxtblock
     self.fill(color["BLACK"])
     for i in range(height):
         for j in range(width):
@@ -207,6 +208,15 @@ def drawtable(self):
                 tmp_color = findcolor(table[i][j])
                 pygame.draw.rect(self, color[tmp_color], [
                                  100+j*20, 120+i*20, 20, 20])
+    pygame.draw.rect(self, color["WHITE"], [340, 160, 100, 20])
+    pygame.draw.rect(self, color["WHITE"], [340, 260, 100, 20])
+    pygame.draw.rect(self, color["WHITE"], [420, 180, 20, 80])
+    for i in range(4):
+        for j in range(4):
+            if block[nxtblock][0][i][j]:
+                tmp_color = findcolor(nxtblock+2)
+                pygame.draw.rect(self, color[tmp_color], [
+                                 340+j*20, 180+i*20, 20, 20])
     pygame.display.flip()
 
 
@@ -235,6 +245,7 @@ def removeline(self):
     global height
     global width
     global score
+    global level
     count = 0
     for i in range(2, height-1):
         chk = 1
