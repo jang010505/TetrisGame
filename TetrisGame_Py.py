@@ -40,7 +40,7 @@ for i in range(2, height):
     table[i][11] = 1
 for i in range(width):
     table[22][i] = 1
-    table[1][i] = 1
+
 
 # block
 block = list()
