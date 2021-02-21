@@ -40,6 +40,7 @@ for i in range(2, height):
     table[i][11] = 1
 for i in range(width):
     table[22][i] = 1
+    table[1][i] = 1
 
 # block
 block = list()
@@ -221,12 +222,10 @@ def drawtable(self):
                 pygame.draw.rect(self, color[tmp_color], [
                                  340+j*20, 180+i*20, 20, 20])
     txtfont = pygame.font.Font(None, 20)
-    txtscore = txtfont.render("SCORE : %d" %
-                              (level//10+1), True, color["BLACK"])
+    txtscore = txtfont.render("SCORE : ", True, color["BLACK"])
     txtlevel = txtfont.render("LEVEL : ", True, color["BLACK"])
     self.blit(txtscore, (325, 300))
     self.blit(txtlevel, (325, 310))
-    self.blit(txtScore, (360, 300))
     pygame.display.flip()
 
 
