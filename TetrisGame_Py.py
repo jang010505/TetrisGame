@@ -224,8 +224,12 @@ def drawtable(self):
     txtfont = pygame.font.Font(None, 20)
     txtscore = txtfont.render("SCORE : ", True, color["BLACK"])
     txtlevel = txtfont.render("LEVEL : ", True, color["BLACK"])
+    txtScore = txtfont.render(str(score), True, color["BLACK"])
+    txtLevel = txtfont.render(str(level//10+1), True, color["BLACK"])
     self.blit(txtscore, (325, 300))
     self.blit(txtlevel, (325, 310))
+    self.blit(txtScore, (383, 300))
+    self.blit(txtLevel, (380, 310))
     pygame.display.flip()
 
 
@@ -315,6 +319,11 @@ def startgame(self):
     while run:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
+                for i in range(2, height-1):
+                    for j in range(1, width-1):
+                        table[i][j] = 0
+                level = 0
+                score = 0
                 run = False
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
@@ -350,6 +359,8 @@ def startgame(self):
             for i in range(2, height-1):
                 for j in range(1, width-1):
                     table[i][j] = 0
+            level = 0
+            score = 0
             break
         removeline(self)
 
